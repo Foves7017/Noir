@@ -9,6 +9,7 @@ JSONDATABASE_FILENAME: str = 'json/userdata.json'
 
 NOIR_DS_CHAT_MODEL: str = 'deepseek-chat'
 NOIR_PORT: int = 2353
+NOIR_VSRSION: str = 'Noir IV v1.1'
 with open('_WORDOUT_PROMPT.md', 'r', encoding='UTF8') as f:
     NOIR_WORDOUT_PROMPT: str = f.read()
 with open('_PROCESS_PROMPT.md', 'r', encoding='UTF8') as f:

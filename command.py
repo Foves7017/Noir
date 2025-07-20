@@ -1,3 +1,4 @@
+from settings import *
 from jsonDataBase import DataBase
 
 def process_command(command: str, unid: str, platName: str) -> str:
@@ -23,6 +24,10 @@ def process_command(command: str, unid: str, platName: str) -> str:
         with DataBase() as data:
             result = data.query_by_unid(unid)
             return f'<NoTranslate>历史：\n{result['history']}'
+    
+    # 输出版本号
+    elif command_list[0] == 'version':
+        return f'<Info>当前版本：{NOIR_VSRSION}</Info>'
 
     # 没有匹配，返回报错
     return f'<Chat>告诉用户输入了未知的命令</Chat>'
