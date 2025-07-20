@@ -1,0 +1,21 @@
+{
+	"nodes":[
+		{"id":"67da791b79c0337b","type":"text","text":"# 用户消息","x":-95,"y":68,"width":250,"height":60},
+		{"id":"071e5e44f3de16a4","type":"text","text":"# 处理器 \n完成用户的请求，生成的语言指导。","x":-95,"y":220,"width":250,"height":157},
+		{"id":"e2a32a3bcc1e00d8","type":"text","text":"# 翻译器\n将语言指导转化为自然语言","x":-95,"y":480,"width":250,"height":170},
+		{"id":"20c05d0a6ae23c5f","type":"text","text":"# 发送消息","x":-95,"y":740,"width":250,"height":60},
+		{"id":"122d3f02882b894d","x":320,"y":340,"width":359,"height":161,"type":"text","text":"# 各种接口\n - QQ机器人接口：[[frontQQ]]\n - 黑盒语音接口：[[frontHeyBox]]"},
+		{"id":"c2bcdc9e377f4ff2","x":-580,"y":293,"width":322,"height":255,"type":"text","text":"# 核心\n - 核心：[[noir]]\n - 用户数据库：[[jsonDataBase]]\n - 命令处理器：[[command]]\n - 工具集：[[tools]]"},
+		{"id":"6fef930b547f1757","type":"text","text":"# 核心：\n# Noir IV","x":-60,"y":-160,"width":180,"height":140}
+	],
+	"edges":[
+		{"id":"f47cccbbee248951","fromNode":"6fef930b547f1757","fromSide":"bottom","toNode":"67da791b79c0337b","toSide":"top","toEnd":"none"},
+		{"id":"7cd9442660af985c","fromNode":"67da791b79c0337b","fromSide":"bottom","toNode":"071e5e44f3de16a4","toSide":"top"},
+		{"id":"a5271e04abb6e7b9","fromNode":"071e5e44f3de16a4","fromSide":"bottom","toNode":"e2a32a3bcc1e00d8","toSide":"top"},
+		{"id":"108b8622f8e36c06","fromNode":"e2a32a3bcc1e00d8","fromSide":"bottom","toNode":"20c05d0a6ae23c5f","toSide":"top"},
+		{"id":"ed53f8824b54def5","fromNode":"67da791b79c0337b","fromSide":"right","toNode":"122d3f02882b894d","toSide":"left"},
+		{"id":"6fd276b9afaff77a","fromNode":"20c05d0a6ae23c5f","fromSide":"right","toNode":"122d3f02882b894d","toSide":"left"},
+		{"id":"7ccb8a49b0f2bff3","fromNode":"071e5e44f3de16a4","fromSide":"left","toNode":"c2bcdc9e377f4ff2","toSide":"right"},
+		{"id":"86e7c3f0ea77d434","fromNode":"e2a32a3bcc1e00d8","fromSide":"left","toNode":"c2bcdc9e377f4ff2","toSide":"right"}
+	]
+}

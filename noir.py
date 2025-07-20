@@ -100,6 +100,7 @@ class Serve:
                 userdata = data.add_new_user(message['platAccount'])
         self.log.debug(f'查询到的用户信息：{userdata}')
         
+        picture = []  # 图片列表
         # --- 判断信息结构并处理 ---
         if content_soure.startswith('%'):
             self.log.info(f'开始处理命令：{message['message']}')
@@ -108,19 +109,18 @@ class Serve:
             self.log.info(f'命令处理结果：{content_processed}')
         else:
             # 处理自然对话
-            picture = []  # 图片列表
             prompt = f'''<UserInfo>
                 <name>{userdata["accounts"][message['platAccount']['platName']]['name']}</name>
                 <unid>{userdata["unid"]}</unid>
                 <plat>{message["platAccount"]['platName']}</plat>
                 <history>{userdata['history']}</history>
-                <allplat>{str(userdata['accounts'].keys())}</allplat>
+                <allplat>{','.join(userdata['accounts'].keys())}</allplat>
             </UserInfo>
             <Message>
                 <content>{message["message"]}</content>
             </Message>
             '''.replace('        ', '')
-            self.log.info(f'使用的提示词：\n{content_soure}')
+            self.log.info(f'使用的提示词：\n{prompt}')
             self.noir.history.append({'role': 'user', 'content': prompt, 'name': userdata['unid']})
             
             # 附加了工具调用后的调用

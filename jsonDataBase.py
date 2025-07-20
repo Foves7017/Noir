@@ -45,7 +45,7 @@ class DataBase:
                     return self.query_by_unid(unid)
         return {}
 
-    def modify_info(self, unid: str, platName: str, key: str, value: str) -> str:
+    def modify_info(self, unid: str, platName: str, key: str, value: str) -> dict:
         """ 修改某一项的值
 
         Args:
@@ -55,13 +55,10 @@ class DataBase:
             value (str): 新的值
 
         Returns:
-            str: 成功返回'OK'，否则返回错误原因
+            dict: 返回修改后的用户信息
         """
-        try:
-            self.file[unid]['accounts'][platName][key] = value
-            return 'OK'
-        except Exception as e:
-            return str(e)
+        self.file[unid]['accounts'][platName][key] = value
+        return self.query_by_unid(unid)
 
     def add_new_user(self, account: dict) -> dict:
         """ 创建新用户，会返回新建的用户信息
