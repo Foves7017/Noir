@@ -9,8 +9,10 @@ JSONDATABASE_FILENAME: str = 'json/userdata.json'
 
 NOIR_DS_CHAT_MODEL: str = 'deepseek-chat'
 NOIR_PORT: int = 2353
-NOIR_VSRSION: str = 'Noir IV v1.1'
+NOIR_VSRSION: str = 'Noir IV v1.2'
 with open('_WORDOUT_PROMPT.md', 'r', encoding='UTF8') as f:
     NOIR_WORDOUT_PROMPT: str = f.read()
+with open(f'_CHARA_PROMPT.md', 'r', encoding='UTF8') as f:
+    NOIR_CHARA_PROMPT = f.read()
 with open('_PROCESS_PROMPT.md', 'r', encoding='UTF8') as f:
-    NOIR_PROCESS_PROMPT: str = f.read() + '以下是你的人物设定：' + NOIR_WORDOUT_PROMPT
+    NOIR_PROCESS_PROMPT: str = f.read()

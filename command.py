@@ -13,8 +13,6 @@ def process_command(command: str, unid: str, platName: str) -> str:
                 newName = command_list[1]
                 with DataBase() as data:
                     result = data.modify_info(unid, 'QQ', 'name', newName)
-                if not result == 'OK':
-                    return f'<Info>发生错误：{result}</Info>'
                 return f'<Chat>修改成功</Chat>'
             except IndexError:  
                 return f'<Info>命令格式为%setname [NewName]</Info><Chat>告诉用户命令格式错误</Chat>'

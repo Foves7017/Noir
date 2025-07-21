@@ -17,6 +17,7 @@ class Noir:
         """ 诺瓦的核心组件
         """
         self.history = [{'role': 'system', 'content': NOIR_PROCESS_PROMPT}]
+        self.trans_history = [{'role': 'system', 'content': NOIR_WORDOUT_PROMPT}]
         self.log = logging.getLogger("Noir IV")
         self.log.info('Noir IV 开始初始化。。。')
         
@@ -90,15 +91,17 @@ class Serve:
         self.log.debug(f'消息原文：{message}')
         self.log.info(f'收到消息：{message['message']}')
         # --- 拆分解析用户信息 ---
-        # 分离消息正文
+        # 分离消息正文和标签
         content_soure: str = message['message'] 
+        spread: bool = message['spread']
+        mustReply: bool = message['mustReply']
         # 查询用户信息
         with DataBase() as data:
             userdata: dict = data.query_by_platID(message['platAccount']['platName'], message['platAccount']['id'])
             if not userdata:
                 self.log.warning('正在创建新用户')
                 userdata = data.add_new_user(message['platAccount'])
-        self.log.debug(f'查询到的用户信息：{userdata}')
+        self.log.debug(f'查询到的用户信息：{userdata}')        
         
         picture = []  # 图片列表
         # --- 判断信息结构并处理 ---
@@ -109,7 +112,7 @@ class Serve:
             self.log.info(f'命令处理结果：{content_processed}')
         else:
             # 处理自然对话
-            prompt = f'''<UserInfo>
+            prompt: str = f'''<UserInfo>
                 <name>{userdata["accounts"][message['platAccount']['platName']]['name']}</name>
                 <unid>{userdata["unid"]}</unid>
                 <plat>{message["platAccount"]['platName']}</plat>
@@ -120,6 +123,9 @@ class Serve:
                 <content>{message["message"]}</content>
             </Message>
             '''.replace('        ', '')
+            # 必须回复的标签
+            if mustReply:
+                prompt: str = '<Reply>\n' + prompt
             self.log.info(f'使用的提示词：\n{prompt}')
             self.noir.history.append({'role': 'user', 'content': prompt, 'name': userdata['unid']})
             
@@ -153,7 +159,12 @@ class Serve:
             
             content_processed = back
             self.log.info(f'主模型输出：\n{content_processed}')
-        
+            # 不回复的处理
+            if content_processed == '<NoReply>':
+                return {'message': [], 'picture': picture}
+            
+        # 组合翻译提示词
+        content_processed = f'{prompt}\n{content_processed}'
         # --- 翻译 ---
         if not '<NoTranslate>' in content_processed:
             notrans = []
@@ -167,7 +178,13 @@ class Serve:
         else:
             content_translated = content_processed.replace('<NoTranslate>', '')
         self.log.info(f'消息中包含的图片：{picture}')
-        return {'message': content_translated, 'picture': picture}
+        
+        # 过滤掉unid
+        unids = re.findall('^[0-9:;<=>?@A-Z]', content_translated)
+        for unid in unids:
+            content_translated.replace(unid, '')
+            
+        return {'message': content_translated.split('<br>'), 'picture': picture}
 
 if __name__ == '__main__':
     noir: Noir = Noir()

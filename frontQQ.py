@@ -40,16 +40,16 @@ class Noir(botpy.Client):
                 else:  # 本地文件
                     await message.reply(file_image=picpath)
                     self.api.post_group_file
-                    
         
-        await message._api.post_group_message(
-            group_openid=message.group_openid, # type: ignore
-            msg_id=message.id,
-            content=QQ_MESSAGE_PREFIX + data['message'],
-            msg_type=0,
-            msg_seq=self.seq,
-        )
-        self.seq += 1
+        for line in data['message']:
+            await message._api.post_group_message(
+                group_openid=message.group_openid, # type: ignore
+                msg_id=message.id,
+                content=QQ_MESSAGE_PREFIX + line,
+                msg_type=0,
+                msg_seq=self.seq,
+            )
+            self.seq += 1
 
     async def on_group_at_message_create(self, message: GroupMessage): # @ 消息
         # 重置 seq
@@ -66,12 +66,18 @@ class Noir(botpy.Client):
                 'platName': 'QQ',
                 'name': '',
                 'id': message.author.member_openid
-            }
+            },
+            "spread": False,
+            "mustReply": True
         }
         data = json.dumps(data).encode()
         self.client.send(data)
         rec = self.client.recv(1024)
-        rec = json.loads(rec.decode())
+        try:
+            rec = json.loads(rec.decode())
+        except json.decoder.JSONDecodeError:
+            self.log.error(f'发生编码错误，收到的内容：{rec}')
+            self.log.exception(rec)
         
         await self.send_message(rec, message)
 
