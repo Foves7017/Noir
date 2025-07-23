@@ -110,6 +110,7 @@ class Serve:
             # 处理命令
             content_processed: str = process_command(message['message'], userdata['unid'], message['platAccount']['platName'])
             self.log.info(f'命令处理结果：{content_processed}')
+            prompt = ''
         else:
             # 处理自然对话
             prompt: str = f'''<UserInfo>

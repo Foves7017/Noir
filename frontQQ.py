@@ -79,7 +79,7 @@ class Noir(botpy.Client):
             self.log.error(f'发生编码错误，收到的内容：{rec}')
             self.log.exception(rec)
         
-        await self.send_message(rec, message)
+        await self.send_message(rec, message)  # type: ignore
 
 # 移除 QQBot 自带的 handler
 for handle in logging.root.handlers:

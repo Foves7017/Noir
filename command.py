@@ -1,6 +1,8 @@
 from settings import *
 from jsonDataBase import DataBase
 
+NOIR_VSRSION: str = 'Noir IV v1.3'
+
 def process_command(command: str, unid: str, platName: str) -> str:
     # --- 将字符的命令转换为列表形式 ---
     command_list: list[str] = command.lstrip('%').split(' ')
